@@ -65,10 +65,24 @@ public class Dao {
 				coins.add(new Coin(id, name,price,startDate,volume24));
 			}
 		} catch (SQLException e) {
-			System.out.println("SQLException: " + e.getMessage());
-		    System.out.println("SQLState: " + e.getSQLState());
-		    System.out.println("VendorError: " + e.getErrorCode());
+			printSQLException(e);
 		}
 		return coins;
+	}
+	
+	private void printSQLException(SQLException ex) {
+		for (Throwable e : ex) {
+			if (e instanceof SQLException) {
+				e.printStackTrace(System.err);
+				System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+				System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+				System.err.println("Message: " + e.getMessage());
+				Throwable t = ex.getCause();
+				while (t != null) {
+					System.out.println("Cause: " + t);
+					t = t.getCause();
+				}
+			}
+		}
 	}
 }
