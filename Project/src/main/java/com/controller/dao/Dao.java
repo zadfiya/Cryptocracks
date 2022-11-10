@@ -1,4 +1,4 @@
-package com.project.dao;
+package com.controller.dao;
 
 public class Dao {
 	private String username="root";
