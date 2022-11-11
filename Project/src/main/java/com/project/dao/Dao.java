@@ -24,11 +24,12 @@ public class Dao {
 	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
 	
 	private static final String SELECT_COIN_BY_ID = "select * from users where id=?;";
+	private static final String SELECT_ALL_COINS="SELECT * from coins";
+	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarked where id=?;";
 	private static final String INSERT_COIN = "INSERT INTO bookmarked"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
 	private static final String UPDATE_COIN="UPDATE bookmarked SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
 	private static final String DELETE_COIN="DELETE from bookmaked where id=?;";
-	
-	private static final String SELECT_ALL_COINS="SELECT * from coins";
+	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarked";
 	
 	protected Connection getConnection()
 	{
@@ -126,7 +127,7 @@ public class Dao {
 		// Step 1: Establishing a Connection
 		try (Connection connection = getConnection();
 				// Step 2:Create a statement using connection object
-				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COIN_BY_ID);) {
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOKMARK_COIN_BY_ID);) {
 			preparedStatement.setInt(1, id);
 			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
@@ -157,6 +158,45 @@ public class Dao {
 		}
 		return coin;
 	}
+	
+	public List<Bookmarked> selectALLBookmarkedCoins() {
+
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<Bookmarked> coins = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKMARKED_COINS);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id1 = rs.getInt("id");
+				int coinid=rs.getInt("coinid");
+				double purchasedPrice = rs.getDouble("pPrice");
+				double quantity = rs.getDouble("quantity");
+				String purchasedDate = rs.getString("purchasedDate");
+				String insertDate = rs.getString("insertDate");
+				String updatedDate = rs.getString("updatedDate");
+				Bookmarked coin = new Bookmarked();
+				coin.setId(id1);
+				coin.setCoinid(coinid);
+				coin.setInsertDate(insertDate);
+				coin.setPurchasedPrice(purchasedPrice);
+				coin.setQuantity(quantity);
+				coin.setUpdateDate(updatedDate);
+				coin.setPurchasedDate(purchasedDate);
+				coins.add(coin);
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return coins;
+	}
+	
 	
 	public boolean updateCoin(Bookmarked coin) throws SQLException, ParseException{
 		boolean rowUpdated;
