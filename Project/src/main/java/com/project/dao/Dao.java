@@ -23,13 +23,13 @@ public class Dao {
 	private String password="Nz@123456789";
 	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
 	
-	private static final String SELECT_COIN_BY_ID = "select * from users where id=?;";
+	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
-	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarked where id=?;";
-	private static final String INSERT_COIN = "INSERT INTO bookmarked"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
-	private static final String UPDATE_COIN="UPDATE bookmarked SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
-	private static final String DELETE_COIN="DELETE from bookmaked where id=?;";
-	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarked";
+	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where id=?;";
+	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
+	private static final String UPDATE_COIN="UPDATE bookmarks SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
+	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
+	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks";
 	
 	protected Connection getConnection()
 	{
@@ -69,7 +69,8 @@ public class Dao {
 				String startDate = rs.getString("startDate");
 				double price = rs.getDouble("price");
 				double volume24 = rs.getDouble("volume24");
-				coin = new Coin(id, name,price,startDate,volume24);
+				String icon = rs.getString("icon");
+				coin = new Coin(id, name,price,startDate,volume24,icon);
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -97,7 +98,8 @@ public class Dao {
 				String startDate = rs.getString("startDate");
 				double price = rs.getDouble("price");
 				double volume24 = rs.getDouble("volume24");
-				coins.add(new Coin(id, name,price,startDate,volume24));
+				String icon = rs.getString("icon");
+				coins.add(new Coin(id, name,price,startDate,volume24,icon));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
