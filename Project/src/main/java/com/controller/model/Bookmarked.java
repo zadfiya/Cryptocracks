@@ -9,15 +9,25 @@ public class Bookmarked {
 	private String insertDate;
 	private String updateDate;
 	
-	public Bookmarked(int id,int coinid,double purchasedPrice,double quantity,String purchasedDate,String insertDate)
+	public Bookmarked()
+	{
+		 id=0;
+		 coinid=0;
+		 purchasedPrice=0;
+		 quantity=0;
+		 purchasedDate="";
+		 insertDate="";
+		 updateDate="";
+	}
+	//updateConstructor
+	public Bookmarked(double purchasedPrice,double quantity,String purchasedDate,String updatedDate,int id)
 	{
 		this.setId(id);
-		this.setCoinid(coinid);
+		//this.setCoinid(coinid);
 		this.setPurchasedPrice(purchasedPrice);
 		this.setQuantity(quantity);
 		this.setPurchasedDate(purchasedDate);
-		this.setInsertDate(insertDate);
-		this.setUpdateDate(insertDate);
+		this.setUpdateDate(updatedDate);
 	}
 	
 	public Bookmarked(int coinid,double purchasedPrice,double quantity,String purchasedDate,String insertDate)
@@ -29,6 +39,8 @@ public class Bookmarked {
 		this.setInsertDate(insertDate);
 		this.setUpdateDate(insertDate);
 	}
+	
+	
 
 	public int getId() {
 		return id;

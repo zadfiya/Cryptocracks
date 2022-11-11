@@ -6,23 +6,26 @@ public class Coin {
 	private double price;
 	private String startDate;
 	private double volume24;
+	private String icon;
 	
 	
-	public Coin(int id,String name,double price,String startDate,double volume24)
+	public Coin(int id,String name,double price,String startDate,double volume24,String icon)
 	{
 		this.id=id;
 		this.name=name;
 		this.price=price;
 		this.startDate=startDate;
 		this.volume24=volume24;
+		this.icon=icon;
 	}
 	
-	public Coin(String name,double price,String startDate, double volume24)
+	public Coin(String name,double price,String startDate, double volume24,String icon)
 	{
 		this.name=name;
 		this.price=price;
 		this.startDate=startDate;
 		this.volume24=volume24;
+		this.icon=icon;
 	}
 	
 	public int getId()
@@ -48,6 +51,14 @@ public class Coin {
 	public String getStartDate()
 	{
 		return startDate;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 	
 	
