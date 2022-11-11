@@ -29,7 +29,7 @@ public class Dao {
 	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
 	private static final String UPDATE_COIN="UPDATE bookmarks SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
 	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
-	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks";
+	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id";
 	
 	protected Connection getConnection()
 	{
