@@ -8,7 +8,7 @@ public class Coin {
 	private double volume24;
 	
 	
-	public Coin(int id,String name,double price,String startDate,double volume)
+	public Coin(int id,String name,double price,String startDate,double volume24)
 	{
 		this.id=id;
 		this.name=name;
@@ -17,9 +17,8 @@ public class Coin {
 		this.volume24=volume24;
 	}
 	
-	public Coin(String name,double price,String startDate,double volume)
+	public Coin(String name,double price,String startDate, double volume24)
 	{
-		this.id=id;
 		this.name=name;
 		this.price=price;
 		this.startDate=startDate;
