@@ -103,7 +103,50 @@ public class Dao {
 		return coins;
 	}
 	
+	public void insertCoin(Bookmarked coin) throws SQLException{
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_COIN)){
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			//String dateString = "22-03-2017 11:18:32";
+			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
+				preparedStatement.setInt(1, coin.getId());
+				preparedStatement.setTimestamp(2,new Timestamp(pDate));
+				preparedStatement.setDouble(3, coin.getQuantity());
+				preparedStatement.setDouble(4, coin.getPurchasedPrice());
+				preparedStatement.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
+				preparedStatement.execute();}catch(Exception e) {
+					e.printStackTrace();
+		}	
+		
+	}
 	
+	public boolean updateCoin(Bookmarked coin) throws SQLException, ParseException{
+		boolean rowUpdated;
+		try(Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COIN);)
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			//String dateString = "11-11-2022 11:18:32";
+			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
+				preparedStatement.setInt(5, coin.getId());
+				preparedStatement.setTimestamp(1,new Timestamp(pDate));
+				preparedStatement.setDouble(2, coin.getQuantity());
+				preparedStatement.setDouble(3, coin.getQuantity());
+				preparedStatement.setTimestamp(4,new Timestamp(System.currentTimeMillis()));
+			rowUpdated = preparedStatement.executeUpdate()>0;
+		}
+		return rowUpdated;
+	}
+	
+	public boolean deleteCoin(int id) throws SQLException {
+		boolean rowDeleted;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_COIN);) {
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
+	}
 	
 	private void printSQLException(SQLException ex) {
 		for (Throwable e : ex) {
