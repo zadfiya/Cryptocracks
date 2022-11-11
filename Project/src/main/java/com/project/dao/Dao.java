@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.project.model.Coin;
 
+import javatemp.model.User;
+
 
 public class Dao {
 	private String username="root";
@@ -40,6 +42,31 @@ public class Dao {
 			e.printStackTrace();
 		}
 		return conn;
+	}
+	
+	public Coin selectCoin(int id) {
+		Coin coin = null;
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COIN_BY_ID);) {
+			preparedStatement.setInt(1, id);
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String startDate = rs.getString("startDate");
+				double price = rs.getDouble("price");
+				double volume24 = rs.getDouble("volume24");
+				coin = new Coin(id, name,price,startDate,volume24);
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return coin;
 	}
 	
 	public List<Coin> selectAllUsers() {
