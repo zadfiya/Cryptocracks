@@ -1,15 +1,21 @@
 package com.project.dao;
-
+import com.project.model.Coin;
+import com.project.model.Bookmarked;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import com.project.model.Coin;
 
-import javatemp.model.User;
+import com.mysql.cj.protocol.InternalTimestamp;
+
+
 
 
 public class Dao {
@@ -18,8 +24,8 @@ public class Dao {
 	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
 	
 	private static final String SELECT_COIN_BY_ID = "select * from users where id=?;";
-	private static final String INSERT_COIN = "INSERT INTO coins"+" (name,price,startDate	) VALUES "+" (?,?,?);";
-	private static final String UPDATE_COIN="UPDATE user SET name=?,email=?,country=? where id=?;";
+	private static final String INSERT_COIN = "INSERT INTO bookmarked"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
+	private static final String UPDATE_COIN="UPDATE bookmarked SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
 	private static final String DELETE_COIN="DELETE from coins where id=?;";
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
 	
@@ -69,7 +75,7 @@ public class Dao {
 		return coin;
 	}
 	
-	public List<Coin> selectAllUsers() {
+	public List<Coin> selectALLCoins() {
 
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<Coin> coins = new ArrayList<>();
@@ -96,6 +102,8 @@ public class Dao {
 		}
 		return coins;
 	}
+	
+	
 	
 	private void printSQLException(SQLException ex) {
 		for (Throwable e : ex) {
