@@ -26,7 +26,8 @@ public class Dao {
 	private static final String SELECT_COIN_BY_ID = "select * from users where id=?;";
 	private static final String INSERT_COIN = "INSERT INTO bookmarked"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
 	private static final String UPDATE_COIN="UPDATE bookmarked SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
-	private static final String DELETE_COIN="DELETE from coins where id=?;";
+	private static final String DELETE_COIN="DELETE from bookmaked where id=?;";
+	
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
 	
 	protected Connection getConnection()
@@ -118,6 +119,43 @@ public class Dao {
 					e.printStackTrace();
 		}	
 		
+	}
+	
+	public Bookmarked selectBookmarkedCoin(int id) {
+		Bookmarked coin = null;
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COIN_BY_ID);) {
+			preparedStatement.setInt(1, id);
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id1 = rs.getInt("id");
+				int coinid=rs.getInt("coinid");
+
+				double purchasedPrice = rs.getDouble("pPrice");
+				double quantity = rs.getDouble("quantity");
+				String purchasedDate = rs.getString("purchasedDate");
+				String insertDate = rs.getString("insertDate");
+				String updatedDate = rs.getString("updatedDate");
+				coin = new Bookmarked();
+				coin.setId(id1);
+				coin.setCoinid(coinid);
+				coin.setInsertDate(insertDate);
+				coin.setPurchasedPrice(purchasedPrice);
+				coin.setQuantity(quantity);
+				coin.setUpdateDate(updatedDate);
+				coin.setPurchasedDate(purchasedDate);
+				//coin = new Bookmarked(id1,coinid, purchasedPrice,quantity,purchasedDate,volume24);
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return coin;
 	}
 	
 	public boolean updateCoin(Bookmarked coin) throws SQLException, ParseException{
