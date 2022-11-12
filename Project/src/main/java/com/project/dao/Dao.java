@@ -35,7 +35,8 @@ public class Dao {
 	{
 		Connection conn = null;
 		try {
-		    conn =
+			Class.forName("com.mysql.jdbc.Driver");
+			conn =
 		       DriverManager.getConnection(jdbcUrl,username,password);
 		    	System.out.print("Successful connected");
 

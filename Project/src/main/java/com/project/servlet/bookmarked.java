@@ -18,7 +18,7 @@ import com.project.model.Coin;
 /**
  * Servlet implementation class bookmarked
  */
-@WebServlet("/bookmarked")
+@WebServlet("/bookmark")
 public class bookmarked extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -51,7 +51,36 @@ public class bookmarked extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String action = request.getServletPath();
+		System.out.println(action+" action fromk bookmarked");
+		try {
+			switch (action) {
+//			case "/new":
+//				showNewForm(request, response);
+//				break;
+			case "/insert":
+				insertCoin(request, response);
+				break;
+			case "/delete":
+				deleteCoin(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateCoin(request, response);
+				break;
+			default:
+				listCoins(request, response);
+				break;
+			}
+		}catch(SQLException e)
+		{
+			throw new ServletException(e);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void listCoins(HttpServletRequest request, HttpServletResponse response)
@@ -99,7 +128,8 @@ public class bookmarked extends HttpServlet {
 
 	private void deleteCoin(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
+		
+		int id = (int) request.getAttribute("id");
 		bookmarkedDao.deleteCoin(id);
 		response.sendRedirect("list");
 

@@ -39,15 +39,17 @@ public class home extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String action = request.getServletPath();
-
+		System.out.println(action+" 33333");
 		try {
 			switch (action) {
 			case "/new":
-				showNewForm(request, response);
+				listCoins(request, response);
+				//showNewForm(request, response);
 				break;
-//			case "/insert":
-//				insertUser(request, response);
-//				break;
+			case "/insert":
+				System.out.println("abcd....");
+				addtoBookmark(request, response);
+				break;
 //			case "/delete":
 //				deleteUser(request, response);
 //				break;
@@ -78,15 +80,20 @@ public class home extends HttpServlet {
 	private void listCoins(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		List<Coin> listCoins = coinDao.selectALLCoins();
+		System.out.println(listCoins);
 		request.setAttribute("listCoins", listCoins);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("coin-list.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("coin.jsp");
 		dispatcher.forward(request, response);
 	}
 	
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+	private void addtoBookmark(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmark-form.jsp");
+		System.out.print("add to bookmark");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmarked");
+		int id = Integer.parseInt(request.getParameter("coinid"));
+		request.setAttribute("user", id);
 		dispatcher.forward(request, response);
 	}
+	
 
 }
