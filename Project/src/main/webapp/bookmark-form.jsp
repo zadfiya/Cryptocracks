@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<title>User Management Application</title>
+<title>Cryptocracks</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -34,15 +34,15 @@
 				<caption>
 					<h2>
 						<c:if test="${bookmarkCoin != null}">
-            			Edit User
+            			Edit Coin
             		</c:if>
 						<c:if test="${bookmarkCoin == null}">
-            			Add New User
+            			Add New Coin
             		</c:if>
 					</h2>
 				</caption>
 
-				<c:if test="${bookmsrkCoin != null}">
+				<c:if test="${bookmarkCoin != null}">
 					<input type="hidden" name="id" value="<c:out value='${bookmarkCoin.id}' />" />
 					<fieldset class="form-group">
 					<label>Coin Name</label> <input type="text"
@@ -62,17 +62,17 @@
 
 				<fieldset class="form-group">
 					<label>Purchased Date</label> <input type="text"
-						value="<c:out value='${bookmarkCoin.email}' />" class="form-control"
+						value="<c:out value='${bookmarkCoin.purchasedDate}' />" class="form-control"
 						name="pDate">
 				</fieldset>
 				<fieldset class="form-group">
 					<label>Purchased Quantity </label> <input type="text"
-						value="<c:out value='${bookmarkCoin.country}' />" class="form-control"
+						value="<c:out value='${bookmarkCoin.quantity}' />" class="form-control"
 						name="quantity">
 				</fieldset>
 				<fieldset class="form-group">
 					<label>Purchased Price </label> <input type="text"
-						value="<c:out value='${bookmarkCoin.country}' />" class="form-control"
+						value="<c:out value='${bookmarkCoin.purchasedPrice}' />" class="form-control"
 						name="pPrice">
 				</fieldset>
 

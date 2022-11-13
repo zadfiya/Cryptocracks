@@ -20,8 +20,8 @@
 			</div>
 
 			<ul class="navbar-nav">
-				<li><a href="<%=request.getContextPath()%>/list"
-					class="nav-link">currencies</a></li>
+				<li><a href="<%=request.getContextPath()%>/bookmarklist"
+					class="nav-link">Bookmark List</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -36,7 +36,7 @@
 			<div class="container text-left">
 
 				<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
-					Add Coin to Bookmark>
+					Add Coin to Bookmark></a>
 			</div>
 			<br>
 			<table class="table table-bordered">
@@ -46,7 +46,6 @@
 						<th>Name</th>
 						<th>Quantity</th>
 						<th>Price</th>
-						<th>Country</th>
 						<th>Actions</th>
 					</tr>
 				</thead>

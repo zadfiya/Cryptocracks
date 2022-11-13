@@ -30,12 +30,12 @@
 		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
 
 		<div class="container">
-			<h3 class="text-center">List of Users</h3>
+			<h3 class="text-center">List of Bookmarks</h3>
 			<hr>
 			<div class="container text-left">
 
 				<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
-					New User</a>
+					New Coin</a>
 			</div>
 			<br>
 			<table class="table table-bordered">
@@ -43,23 +43,29 @@
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Email</th>
-						<th>Country</th>
+						<th>Purchased Price</th>
+						<th>Quantity</th>
+						<th>Purchased Date</th>
+						<th>Insert Date</th>
+						<th>Update Date</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<!--   for (Todo todo: todos) {  -->
-					<c:forEach var="user" items="${listUser}">
+					<c:forEach var="bCoin" items="${listCoins}">
 
 						<tr>
-							<td><c:out value="${user.id}" /></td>
-							<td><c:out value="${user.name}" /></td>
-							<td><c:out value="${user.email}" /></td>
-							<td><c:out value="${user.country}" /></td>
-							<td><a href="edit?id=<c:out value='${user.id}' />">Edit</a>
+							<td><c:out value="${bCoin.id}" /></td>
+							<td><c:out value="${bCoin.name}" /></td>
+							<td><c:out value="${bCoin.purchasedPrice}" /></td>
+							<td><c:out value="${bCoin.quantity}" /></td>
+							<td><c:out value="${bCoin.purchasedDate}" /></td>
+							<td><c:out value="${bCoin.insertDate}" /></td>
+							<td><c:out value="${bCoin.updateDate}" /></td>
+							<td><a href="edit?id=<c:out value='${bCoin.id}' />">Edit</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; <a
-								href="delete?id=<c:out value='${user.id}' />">Delete</a></td>
+								href="delete?id=<c:out value='${bCoin.id}' />">Delete</a></td>
 						</tr>
 					</c:forEach>
 					<!-- } -->

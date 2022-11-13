@@ -61,10 +61,15 @@ public class home extends HttpServlet {
 				deleteCoin(request, response);
 				break;
 			case "/edit":
+				System.out.println("edit.....");
 				showEditForm(request, response);
 				break;
 			case "/update":
 				updateCoin(request,response);
+				break;
+			case "/bookmarklist":
+				System.out.println("list..... bookmarklist");
+				listBookmarkedCoins(request,response);
 				break;
 			default:
 				listCoins(request, response);
@@ -86,11 +91,11 @@ public class home extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		String action = request.getServletPath();
-		//System.out.println(action+" 33333");
+		System.out.println(action+" action");
 		try {
 			switch (action) {
 			case "/new":
-				listCoins(request, response);
+				listBookmarkedCoins(request,response);
 				//showNewForm(request, response);
 				break;
 			case "/insert":
@@ -110,7 +115,12 @@ public class home extends HttpServlet {
 			case "/update":
 				updateCoin(request,response);
 				break;
+			case "/bookmarklist":
+				System.out.println("list..... bookmarklist");
+				listBookmarkedCoins(request,response);
+				break;
 			default:
+				System.out.println("list..... default");
 				listCoins(request, response);
 				break;
 			}
@@ -144,9 +154,9 @@ public class home extends HttpServlet {
 	
 	private void listBookmarkedCoins(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		List<Coin> listCoins = coinDao.selectALLCoins();
+		List<Bookmarked> listCoins = coinDao.selectALLBookmarkedCoins();
 		request.setAttribute("listCoins", listCoins);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("coin-list.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmark-list.jsp");
 		dispatcher.forward(request, response);
 	}
 	
@@ -173,16 +183,16 @@ public class home extends HttpServlet {
 	private void insertCoin(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
 		
-		//System.out.println(request.getParameter("name") + "nnnnnnnnnnnnn");
 		int coinid = Integer.parseInt((String) request.getParameter("coinid"));
-		System.out.println(coinid);
+		String name = request.getParameter("name");
 		double purchasedPrice = Double.parseDouble((String) request.getParameter("pPrice"));
 		double quantity = Double.parseDouble((String) request.getParameter("quantity"));
 		String purchasedDate = (String) request.getParameter("pDate");
-		String insertDate = "12-11-2022";
+		//String insertDate = "12-11-2022";
 		
-		//String insertDate = (String) request.getAttribute("insertDate");
+		String insertDate = (String) request.getAttribute("insertDate");
 		Bookmarked bookmarked = new Bookmarked(coinid,purchasedPrice,quantity,purchasedDate,insertDate);
+		bookmarked.setName(name);
 		bookmarkedDao.insertCoin(bookmarked);
 		response.sendRedirect("list");
 	}
@@ -214,15 +224,15 @@ public class home extends HttpServlet {
 
 		Bookmarked bookmark = new Bookmarked( purchasedPrice, quantity, purchasedDate, updatedDate, id);
 		bookmarkedDao.updateCoin(bookmark);
-		response.sendRedirect("list");
+		response.sendRedirect("bookmarklist");
 	}
 
 	private void deleteCoin(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
 		
-		int id = (int) request.getAttribute("id");
+		int id = Integer.parseInt(request.getParameter("id"));
 		bookmarkedDao.deleteCoin(id);
-		response.sendRedirect("list");
+		response.sendRedirect("bookmarklist");
 
 	}
 	

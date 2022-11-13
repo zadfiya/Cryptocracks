@@ -8,6 +8,7 @@ public class Bookmarked {
 	private String purchasedDate;
 	private String insertDate;
 	private String updateDate;
+	private String name;
 	
 	public Bookmarked()
 	{
@@ -18,6 +19,7 @@ public class Bookmarked {
 		 purchasedDate="";
 		 insertDate="";
 		 updateDate="";
+		 setName("");
 	}
 	//updateConstructor
 	public Bookmarked(double purchasedPrice,double quantity,String purchasedDate,String updatedDate,int id)
@@ -96,5 +98,11 @@ public class Bookmarked {
 
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

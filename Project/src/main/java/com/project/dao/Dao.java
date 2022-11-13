@@ -25,9 +25,9 @@ public class Dao {
 	
 	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
-	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where id=?;";
-	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchasedDate,quantity,purchasedPrie,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
-	private static final String UPDATE_COIN="UPDATE bookmarks SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
+	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where bookmarks.id=?;";
+	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchasedDate,quantity,purchasedPrice,insertDate,updateDate,name) VALUES "+" (?,?,?,?,?,?,?);";
+	private static final String UPDATE_COIN="UPDATE bookmarks SET purchasedDate=?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
 	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
 	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id";
 	
@@ -111,7 +111,7 @@ public class Dao {
 	public void insertCoin(Bookmarked coin) throws SQLException{
 		try(Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_COIN)){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 			//String dateString = "22-03-2017 11:18:32";
 			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
 				preparedStatement.setInt(1, coin.getId());
@@ -120,6 +120,7 @@ public class Dao {
 				preparedStatement.setDouble(4, coin.getPurchasedPrice());
 				preparedStatement.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
 				preparedStatement.setTimestamp(6,new Timestamp(System.currentTimeMillis()));
+				preparedStatement.setString(7,coin.getName());
 				preparedStatement.execute();}catch(Exception e) {
 					e.printStackTrace();
 					
@@ -134,20 +135,22 @@ public class Dao {
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOKMARK_COIN_BY_ID);) {
 			preparedStatement.setInt(1, id);
-			System.out.println(preparedStatement);
+			
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
+				
 				int id1 = rs.getInt("id");
 				int coinid=rs.getInt("coinid");
 
-				double purchasedPrice = rs.getDouble("pPrice");
+				double purchasedPrice = rs.getDouble("purchasedPrice");
 				double quantity = rs.getDouble("quantity");
 				String purchasedDate = rs.getString("purchasedDate");
 				String insertDate = rs.getString("insertDate");
-				String updatedDate = rs.getString("updatedDate");
+				String updatedDate = rs.getString("updateDate");
+				String name = rs.getString("name");
 				coin = new Bookmarked();
 				coin.setId(id1);
 				coin.setCoinid(coinid);
@@ -156,6 +159,7 @@ public class Dao {
 				coin.setQuantity(quantity);
 				coin.setUpdateDate(updatedDate);
 				coin.setPurchasedDate(purchasedDate);
+				coin.setName(name);
 				//coin = new Bookmarked(id1,coinid, purchasedPrice,quantity,purchasedDate,volume24);
 			}
 		} catch (SQLException e) {
@@ -165,7 +169,7 @@ public class Dao {
 	}
 	
 	public List<Bookmarked> selectALLBookmarkedCoins() {
-
+		
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<Bookmarked> coins = new ArrayList<>();
 		// Step 1: Establishing a Connection
@@ -181,11 +185,12 @@ public class Dao {
 			while (rs.next()) {
 				int id1 = rs.getInt("id");
 				int coinid=rs.getInt("coinid");
-				double purchasedPrice = rs.getDouble("pPrice");
+				double purchasedPrice = rs.getDouble("purchasedPrice");
 				double quantity = rs.getDouble("quantity");
 				String purchasedDate = rs.getString("purchasedDate");
 				String insertDate = rs.getString("insertDate");
-				String updatedDate = rs.getString("updatedDate");
+				String updatedDate = rs.getString("updateDate");
+				String name = rs.getString("name");
 				Bookmarked coin = new Bookmarked();
 				coin.setId(id1);
 				coin.setCoinid(coinid);
@@ -194,6 +199,7 @@ public class Dao {
 				coin.setQuantity(quantity);
 				coin.setUpdateDate(updatedDate);
 				coin.setPurchasedDate(purchasedDate);
+				coin.setName(name);
 				coins.add(coin);
 			}
 		} catch (SQLException e) {
@@ -208,7 +214,7 @@ public class Dao {
 		try(Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COIN);)
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 			//String dateString = "11-11-2022 11:18:32";
 			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
 				preparedStatement.setInt(5, coin.getId());
