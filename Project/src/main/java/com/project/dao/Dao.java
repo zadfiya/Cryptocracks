@@ -26,7 +26,7 @@ public class Dao {
 	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
 	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where id=?;";
-	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchaseDate,quantity,purchasedPrice,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
+	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchasedDate,quantity,purchasedPrie,insertDate,updateDate) VALUES "+" (?,?,?,?,?,?);";
 	private static final String UPDATE_COIN="UPDATE bookmarks SET purchaseDate?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
 	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
 	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id";
@@ -60,7 +60,7 @@ public class Dao {
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COIN_BY_ID);) {
 			preparedStatement.setInt(1, id);
-			System.out.println(preparedStatement);
+//			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -88,7 +88,7 @@ public class Dao {
 
 				// Step 2:Create a statement using connection object
 			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_COINS);) {
-			System.out.println(preparedStatement);
+			//System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -111,7 +111,7 @@ public class Dao {
 	public void insertCoin(Bookmarked coin) throws SQLException{
 		try(Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_COIN)){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
 			//String dateString = "22-03-2017 11:18:32";
 			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
 				preparedStatement.setInt(1, coin.getId());
@@ -119,8 +119,10 @@ public class Dao {
 				preparedStatement.setDouble(3, coin.getQuantity());
 				preparedStatement.setDouble(4, coin.getPurchasedPrice());
 				preparedStatement.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
+				preparedStatement.setTimestamp(6,new Timestamp(System.currentTimeMillis()));
 				preparedStatement.execute();}catch(Exception e) {
 					e.printStackTrace();
+					
 		}	
 		
 	}
@@ -171,7 +173,7 @@ public class Dao {
 
 				// Step 2:Create a statement using connection object
 			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKMARKED_COINS);) {
-			System.out.println(preparedStatement);
+			//System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 

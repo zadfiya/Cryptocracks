@@ -24,11 +24,11 @@
 	<div class="container col-md-5">
 		<div class="card">
 			<div class="card-body">
-				<c:if test="${user != null}">
+				<c:if test="${bookmarkCoin != null}">
 					<form action="update" method="post">
 				</c:if>
-				<c:if test="${user == null}">
-					<form action="insert" method="post">
+				<c:if test="${coin != null}">
+					<form action="insert?coinid=${coin.id}" method="get">
 				</c:if>
 
 				<caption>
@@ -42,26 +42,38 @@
 					</h2>
 				</caption>
 
-				<c:if test="${user != null}">
+				<c:if test="${bookmsrkCoin != null}">
 					<input type="hidden" name="id" value="<c:out value='${bookmarkCoin.id}' />" />
+					<fieldset class="form-group">
+					<label>Coin Name</label> <input type="text"
+						value="<c:out value='${bookmarkCoin.name}' />" class="form-control"
+						name="name" required="required">
+					</fieldset>
+				</c:if>
+
+				<c:if test="${coin != null}">
+				<input type="hidden" name="coinid" value="<c:out value='${coin.id}' />" />
+					<fieldset class="form-group">
+						<label>Coin Name</label> <input type="text"
+							value="<c:out value='${coin.name}' />" class="form-control"
+							name="name" required="required">
+					</fieldset>
 				</c:if>
 
 				<fieldset class="form-group">
-					<label>User Name</label> <input type="text"
-						value="<c:out value='${bookmarkCoin.name}' />" class="form-control"
-						name="name" required="required">
-				</fieldset>
-
-				<fieldset class="form-group">
-					<label>User Email</label> <input type="text"
+					<label>Purchased Date</label> <input type="text"
 						value="<c:out value='${bookmarkCoin.email}' />" class="form-control"
-						name="email">
+						name="pDate">
 				</fieldset>
-
 				<fieldset class="form-group">
-					<label>User Country</label> <input type="text"
+					<label>Purchased Quantity </label> <input type="text"
 						value="<c:out value='${bookmarkCoin.country}' />" class="form-control"
-						name="country">
+						name="quantity">
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Purchased Price </label> <input type="text"
+						value="<c:out value='${bookmarkCoin.country}' />" class="form-control"
+						name="pPrice">
 				</fieldset>
 
 				<button type="submit" class="btn btn-success">Save</button>

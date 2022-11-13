@@ -2,6 +2,7 @@ package com.project.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.project.dao.Dao;
+import com.project.model.Bookmarked;
 import com.project.model.Coin;
 
 /**
@@ -20,9 +22,10 @@ import com.project.model.Coin;
 @WebServlet("/")
 public class home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Dao coinDao;
+	private Dao coinDao,bookmarkedDao;
 	public void init() {
 		coinDao = new Dao();
+		bookmarkedDao = new Dao();
 	}
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,7 +42,7 @@ public class home extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String action = request.getServletPath();
-		System.out.println(action+" 33333");
+		//System.out.println(action+" 33333");
 		try {
 			switch (action) {
 			case "/new":
@@ -47,18 +50,22 @@ public class home extends HttpServlet {
 				//showNewForm(request, response);
 				break;
 			case "/insert":
-				System.out.println("abcd....");
-				addtoBookmark(request, response);
+				insertCoin(request,response);
+				//System.out.println("abcd....");
+//				addtoBookmark(request, response);
 				break;
-//			case "/delete":
-//				deleteUser(request, response);
-//				break;
-//			case "/edit":
-//				showEditForm(request, response);
-//				break;
-//			case "/update":
-//				updateUser(request, response);
-//				break;
+			case "/addcoin":
+				addNewCoin(request,response);
+				break;
+			case "/delete":
+				deleteCoin(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateCoin(request,response);
+				break;
 			default:
 				listCoins(request, response);
 				break;
@@ -66,6 +73,9 @@ public class home extends HttpServlet {
 		}catch(SQLException e)
 		{
 			throw new ServletException(e);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -74,7 +84,44 @@ public class home extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
+		String action = request.getServletPath();
+		//System.out.println(action+" 33333");
+		try {
+			switch (action) {
+			case "/new":
+				listCoins(request, response);
+				//showNewForm(request, response);
+				break;
+			case "/insert":
+				insertCoin(request,response);
+				//System.out.println("abcd....");
+//				addtoBookmark(request, response);
+				break;
+			case "/addcoin":
+				addNewCoin(request,response);
+				break;
+			case "/delete":
+				deleteCoin(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateCoin(request,response);
+				break;
+			default:
+				listCoins(request, response);
+				break;
+			}
+		}catch(SQLException e)
+		{
+			throw new ServletException(e);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void listCoins(HttpServletRequest request, HttpServletResponse response)
@@ -88,11 +135,95 @@ public class home extends HttpServlet {
 	
 	private void addtoBookmark(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.print("add to bookmark");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmarked");
+		//RequestDispatcher dispatcher = request.getRequestDispatcher("bookmarked");
 		int id = Integer.parseInt(request.getParameter("coinid"));
-		request.setAttribute("user", id);
+		//request.setAttribute("user", id);
+		response.sendRedirect("boommarked?coindid="+id);
+		//dispatcher.forward(request, response);
+	}
+	
+	private void listBookmarkedCoins(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		List<Coin> listCoins = coinDao.selectALLCoins();
+		request.setAttribute("listCoins", listCoins);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("coin-list.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	private void addNewCoin(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("coinid"));
+		Coin coin = coinDao.selectCoin(id);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmark-form.jsp");
+		request.setAttribute("coin",coin );
+		dispatcher.forward(request, response);
+
+	}
+	
+	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		Bookmarked bookmarkedCoin = bookmarkedDao.selectBookmarkedCoin(id);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmark-form.jsp");
+		request.setAttribute("bookmarkCoin", bookmarkedCoin);
+		dispatcher.forward(request, response);
+
+	}
+	
+	private void insertCoin(HttpServletRequest request, HttpServletResponse response) 
+			throws SQLException, IOException {
+		
+		//System.out.println(request.getParameter("name") + "nnnnnnnnnnnnn");
+		int coinid = Integer.parseInt((String) request.getParameter("coinid"));
+		System.out.println(coinid);
+		double purchasedPrice = Double.parseDouble((String) request.getParameter("pPrice"));
+		double quantity = Double.parseDouble((String) request.getParameter("quantity"));
+		String purchasedDate = (String) request.getParameter("pDate");
+		String insertDate = "12-11-2022";
+		
+		//String insertDate = (String) request.getAttribute("insertDate");
+		Bookmarked bookmarked = new Bookmarked(coinid,purchasedPrice,quantity,purchasedDate,insertDate);
+		bookmarkedDao.insertCoin(bookmarked);
+		response.sendRedirect("list");
+	}
+	
+//	private void insertCoin(HttpServletRequest request, HttpServletResponse response) 
+//			throws SQLException, IOException {
+//		
+//		System.out.println(request.getAttribute("name") + "nnnnnnnnnnnnn");
+//		int coinid = Integer.parseInt((String) request.getParameter("coinid"));
+//		System.out.println(  request.getAttribute("pPrice"));
+//		double purchasedPrice = Double.parseDouble((String) request.getAttribute("pPrice"));
+//		double quantity = Double.parseDouble((String) request.getAttribute("quantity"));
+//		String purchasedDate = (String) request.getAttribute("pDate");
+//		String insertDate = "12-11-2022";
+//		
+//		//String insertDate = (String) request.getAttribute("insertDate");
+//		Bookmarked bookmarked = new Bookmarked(coinid,purchasedPrice,quantity,purchasedDate,insertDate);
+//		bookmarkedDao.insertCoin(bookmarked);
+//		response.sendRedirect("list");
+//	}
+
+	private void updateCoin(HttpServletRequest request, HttpServletResponse response) 
+			throws SQLException, IOException, ParseException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		double purchasedPrice = Double.parseDouble(request.getParameter("pPrice"));
+		double quantity = Double.parseDouble(request.getParameter("quantity"));
+		String purchasedDate = request.getParameter("pDate");
+		String updatedDate = request.getParameter("updatedDate");
+
+		Bookmarked bookmark = new Bookmarked( purchasedPrice, quantity, purchasedDate, updatedDate, id);
+		bookmarkedDao.updateCoin(bookmark);
+		response.sendRedirect("list");
+	}
+
+	private void deleteCoin(HttpServletRequest request, HttpServletResponse response) 
+			throws SQLException, IOException {
+		
+		int id = (int) request.getAttribute("id");
+		bookmarkedDao.deleteCoin(id);
+		response.sendRedirect("list");
+
 	}
 	
 

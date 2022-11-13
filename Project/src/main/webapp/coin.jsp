@@ -59,7 +59,7 @@
 							<td><c:out value="${user.name}" /></td>
 							<td><c:out value="${user.price}" /></td>
 							<td><c:out value="${user.volume24}" /></td>
-							<td><a href="insert?coinid=<c:out value='${user.id}'/>">Add to Bookmark</a>
+							<td><a href="addcoin?coinid=<c:out value='${user.id}'/>">Add to Bookmark</a>
 						</tr>
 					</c:forEach>
 					<!-- } -->

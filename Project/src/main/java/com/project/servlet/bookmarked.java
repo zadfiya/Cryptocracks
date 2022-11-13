@@ -43,7 +43,37 @@ public class bookmarked extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		String action = request.getServletPath();
+		System.out.println(action+" action fromk bookmarked get");
+		try {
+			switch (action) {
+//			case "/new":
+//				showNewForm(request, response);
+//				break;
+			case "/insert":
+				insertCoin(request, response);
+				break;
+			case "/delete":
+				deleteCoin(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateCoin(request, response);
+				break;
+			default:
+				System.out.print("abcd from default");
+				listCoins(request, response);
+				break;
+			}
+		}catch(SQLException e)
+		{
+			throw new ServletException(e);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -71,6 +101,7 @@ public class bookmarked extends HttpServlet {
 				updateCoin(request, response);
 				break;
 			default:
+				System.out.print("abcd from default");
 				listCoins(request, response);
 				break;
 			}

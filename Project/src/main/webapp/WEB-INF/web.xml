@@ -8,6 +8,15 @@
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
+    
   </welcome-file-list>
+  <servlet>
+		<servlet-name>abc</servlet-name>
+		<servlet-class>com.project.servlet.bookmarked</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>abc</servlet-name>
+		<url-pattern>/bookmarked</url-pattern>
+	</servlet-mapping>
 
 </web-app>
