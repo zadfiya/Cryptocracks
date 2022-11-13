@@ -9,63 +9,82 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
+	<style>
+    .bk-image {
+        background-color: #e2ebf0;
+    }
+</style>
 </head>
-<body>
+<body class="bk-image">
 
-	<header>
-		<nav class="navbar navbar-expand-md navbar-dark"
-			style="background-color: tomato">
-			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand"> Cryptocracks </a>
-			</div>
+	<div>
+        <marquee>
+            <h5> Crypto Market is High now.....</h5>
+        </marquee>
+    </div>
 
-			<ul class="navbar-nav">
-				<li><a href="<%=request.getContextPath()%>/bookmarklist"
-					class="nav-link">Bookmark List</a></li>
-			</ul>
-		</nav>
-	</header>
-	<br>
+    <div class="container">
+        <div>
+            <h3>Crypto Currency List</h3>
+        </div>
+       <hr>
+        <div class="d-flex">
+            <div>
+                <a href="<%=request.getContextPath()%>/new" class="btn btn-success">List All Coins</a>
+            </div>
+            <div class="ml-auto">
+            	<a href="<%=request.getContextPath()%>/bookmarklist" class="btn btn-success">Bookmark List</a>
+            </div>
+        </div>
 
-	<div class="row">
-		<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
-
-		<div class="container">
-			<h3 class="text-center">List of Coins</h3>
-			<hr>
-			<div class="container text-left">
-
-				<a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add
-					Add Coin to Bookmark></a>
-			</div>
-			<br>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Quantity</th>
-						<th>Price</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!--   for (Todo todo: todos) {  -->
-					<c:forEach var="user" items="${listCoins}">
-
-						<tr>
-							<td><c:out value="${user.id}" /></td>
-							<td><c:out value="${user.name}" /></td>
-							<td><c:out value="${user.price}" /></td>
-							<td><c:out value="${user.volume24}" /></td>
-							<td><a href="addcoin?coinid=<c:out value='${user.id}'/>">Add to Bookmark</a>
-						</tr>
-					</c:forEach>
-					<!-- } -->
-				</tbody>
-
-			</table>
-		</div>
-	</div>
+        <table class="table table-bordered"
+            style="margin-top: 20px; text-align:center; background-color: #BCD2E5;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Symbol</th>
+                    <th>Coin Name</th>
+                    <th>Price (USD)</th>
+                    <th>24hr Volume</th>
+                    <th>Data Trade Start</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<c:forEach var="user" items="${listCoins}">
+                <tr class="flex align-middle">
+                    <td><c:out value="${user.id}" /></td>
+					<td><img style="width: 20%; height: auto;" src='<c:out value="${user.icon}"></c:out>' /><c:out value="${user.name}" /></td>
+					<td><c:out value="${user.name}" /></td>
+					<td><c:out value="${user.price}" /></td>
+					<td><c:out value="${user.volume24}" /></td>
+					<td><c:out value="${user.volume24}" /></td>
+                    <td>
+                        <a href="addcoin?coinid=<c:out value='${user.id}'/>" class="btn btn-info item-edit" title="Edit details">
+                            <span class="svg-icon svg-icon-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+							  <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5V4.5z"/>
+							</svg>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </body>
+<style>
+    table tbody tr:nth-child(odd) {
+        background-color: #F3FAFF;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #FFFFFF;
+    }
+
+    table tbody tr:hover {
+        background-color: #bcbcbc;
+    }
+</style>
 </html>

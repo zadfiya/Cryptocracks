@@ -8,19 +8,18 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
+	<style>
+    .bk-image {
+        background-color: #e2ebf0;
+    }
+</style>
 </head>
-<body>
-
-	<header>
-		<nav class="navbar navbar-expand-md navbar-dark"
-			style="background-color: tomato">
-			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand"> User Management App </a>
-			</div>
-
-		</nav>
-	</header>
-	<br>
+<body class="bk-image">
+<div>
+        <marquee>
+            <h5> Crypto Market is High now.....</h5>
+        </marquee>
+    </div>
 	<div class="container col-md-5">
 		<div class="card">
 			<div class="card-body">
@@ -37,7 +36,7 @@
             			Edit Coin
             		</c:if>
 						<c:if test="${bookmarkCoin == null}">
-            			Add New Coin
+            			Add Coin
             		</c:if>
 					</h2>
 				</caption>
@@ -83,4 +82,3 @@
 	</div>
 </body>
 </html>
-Footer

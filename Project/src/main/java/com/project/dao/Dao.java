@@ -20,8 +20,10 @@ import com.mysql.cj.protocol.InternalTimestamp;
 
 public class Dao {
 	private String username="root";
-	private String password="Nz@123456789";
-	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
+//	private String password="Nz@123456789";
+	private String password="";
+//	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
+	private String jdbcUrl ="jdbc:mysql://localhost:3306/crypto_currency";
 	
 	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
 	private static final String SELECT_ALL_COINS="SELECT * from coins";
