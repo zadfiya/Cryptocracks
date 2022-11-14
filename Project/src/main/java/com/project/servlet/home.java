@@ -43,9 +43,10 @@ public class home extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String action = request.getServletPath();
 		//System.out.println(action+" 33333");
+		
 		try {
 			switch (action) {
-			case "/new":
+			case "/coinlist":
 				listCoins(request, response);
 				//showNewForm(request, response);
 				break;
@@ -94,10 +95,6 @@ public class home extends HttpServlet {
 		System.out.println(action+" action");
 		try {
 			switch (action) {
-			case "/new":
-				listBookmarkedCoins(request,response);
-				//showNewForm(request, response);
-				break;
 			case "/insert":
 				insertCoin(request,response);
 				//System.out.println("abcd....");

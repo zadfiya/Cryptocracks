@@ -74,8 +74,15 @@
 						value="<c:out value='${bookmarkCoin.purchasedPrice}' />" class="form-control"
 						name="pPrice">
 				</fieldset>
-
-				<button type="submit" class="btn btn-success">Save</button>
+				<div class="d-flex">
+					<button type="submit" class="btn btn-success">Save</button>
+					<c:if test="${bookmarkCoin != null}">            			
+						<a href="<%=request.getContextPath()%>/bookmarklist" class="btn btn-danger ml-auto">Go Back</a>
+            		</c:if>
+            		<c:if test="${bookmarkCoin == null}">            			
+						<a href="<%=request.getContextPath()%>/coinlist" class="btn btn-danger ml-auto">Go Back</a>
+            		</c:if>
+					</div>
 				</form>
 			</div>
 		</div>

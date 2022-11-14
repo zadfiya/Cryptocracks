@@ -29,10 +29,10 @@
        <hr>
         <div class="d-flex">
             <div>
-                <a href="<%=request.getContextPath()%>/new" class="btn btn-success">List All Coins</a>
+                <a href="<%=request.getContextPath()%>/coinlist" class="btn btn-warning">List All Coins</a>
             </div>
             <div class="ml-auto">
-            	<a href="<%=request.getContextPath()%>/bookmarklist" class="btn btn-success">Bookmark List</a>
+            	<a href="<%=request.getContextPath()%>/bookmarklist" class="btn btn-primary">Bookmark List</a>
             </div>
         </div>
 

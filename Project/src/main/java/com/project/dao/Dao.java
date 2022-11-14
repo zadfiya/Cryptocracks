@@ -42,7 +42,6 @@ public class Dao {
 		       DriverManager.getConnection(jdbcUrl,username,password);
 		    	System.out.print("Successful connected");
 
-
 		} catch (SQLException ex) {
 		    // handle any errors
 		    System.out.println("SQLException: " + ex.getMessage());
