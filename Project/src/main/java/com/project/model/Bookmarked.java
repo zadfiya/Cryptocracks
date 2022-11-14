@@ -19,7 +19,7 @@ public class Bookmarked {
 		 purchasedDate="";
 		 insertDate="";
 		 updateDate="";
-		 setName("");
+		 name="";
 	}
 	//updateConstructor
 	public Bookmarked(double purchasedPrice,double quantity,String purchasedDate,String updatedDate,int id)

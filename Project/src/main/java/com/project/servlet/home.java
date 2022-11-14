@@ -32,17 +32,13 @@ public class home extends HttpServlet {
      */
     public home() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String action = request.getServletPath();
-		//System.out.println(action+" 33333");
 		
 		try {
 			switch (action) {
@@ -61,9 +57,6 @@ public class home extends HttpServlet {
 			case "/edit":
 				showEditForm(request, response);
 				break;
-//			case "/update":
-//				updateCoin(request,response);
-//				break;
 			case "/bookmarklist":
 				listBookmarkedCoins(request,response);
 				break;
@@ -75,10 +68,6 @@ public class home extends HttpServlet {
 		{
 			throw new ServletException(e);
 		} 
-//		catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -90,8 +79,6 @@ public class home extends HttpServlet {
 			switch (action) {
 			case "/insert":
 				insertCoin(request,response);
-				//System.out.println("abcd....");
-//				addtoBookmark(request, response);
 				break;
 			case "/addcoin":
 				addNewCoin(request,response);
@@ -116,7 +103,6 @@ public class home extends HttpServlet {
 		{
 			throw new ServletException(e);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
