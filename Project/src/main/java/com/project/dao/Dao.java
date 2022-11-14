@@ -1,6 +1,7 @@
 package com.project.dao;
 import com.project.model.Coin;
 import com.project.model.Bookmarked;
+import com.project.dao.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,47 +20,50 @@ import com.mysql.cj.protocol.InternalTimestamp;
 
 
 public class Dao {
-	private String username="root";
+//	private String username="root";
 //	private String password="Nz@123456789";
-	private String password="";
+//	//private String password="";
 //	private String jdbcUrl ="jdbc:mysql://localhost:3306/cryptocurrencies?userSSL=false";
-	private String jdbcUrl ="jdbc:mysql://localhost:3306/crypto_currency";
+	//private String jdbcUrl ="jdbc:mysql://localhost:3306/crypto_currency";
 	
-	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
-	private static final String SELECT_ALL_COINS="SELECT * from coins";
-	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where bookmarks.id=?;";
-	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchasedDate,quantity,purchasedPrice,insertDate,updateDate,name) VALUES "+" (?,?,?,?,?,?,?);";
-	private static final String UPDATE_COIN="UPDATE bookmarks SET purchasedDate=?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
-	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
-	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id";
+//	private static final String SELECT_COIN_BY_ID = "select * from coins where id=?;";
+//	private static final String SELECT_ALL_COINS="SELECT * from coins";
+//	private static final String SELECT_BOOKMARK_COIN_BY_ID = "select * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id where bookmarks.id=?;";
+//	private static final String INSERT_COIN = "INSERT INTO bookmarks"+" (coinid,purchasedDate,quantity,purchasedPrice,insertDate,updateDate,name) VALUES "+" (?,?,?,?,?,?,?);";
+//	private static final String UPDATE_COIN="UPDATE bookmarks SET purchasedDate=?, quantity=?,purchasedPrice=?,updateDate=? where id=?;";
+//	private static final String DELETE_COIN="DELETE from bookmarks where id=?;";
+//	private static final String SELECT_ALL_BOOKMARKED_COINS="SELECT * from bookmarks LEFT JOIN coins ON bookmarks.coinid = coins.id";
 	
-	protected Connection getConnection()
+//	protected Connection getConnection()
+//	{
+//		Connection conn = null;
+//		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			conn =
+//		       DriverManager.getConnection(jdbcUrl,username,password);
+//		    	System.out.print("Successful connected");
+//
+//		} catch (SQLException ex) {
+//		    // handle any errors
+//		    System.out.println("SQLException: " + ex.getMessage());
+//		    System.out.println("SQLState: " + ex.getSQLState());
+//		    System.out.println("VendorError: " + ex.getErrorCode());
+//		} catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//		return conn;
+//	}
+	public static Dao getInstance()
 	{
-		Connection conn = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn =
-		       DriverManager.getConnection(jdbcUrl,username,password);
-		    	System.out.print("Successful connected");
-
-		} catch (SQLException ex) {
-		    // handle any errors
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return conn;
+		return new Dao();
 	}
-	
 	public Coin selectCoin(int id) {
 		Coin coin = null;
 		// Step 1: Establishing a Connection
-		try (Connection connection = getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				// Step 2:Create a statement using connection object
-				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COIN_BY_ID);) {
+				PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_COIN_BY_ID);) {
 			preparedStatement.setInt(1, id);
 //			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
@@ -85,10 +89,10 @@ public class Dao {
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<Coin> coins = new ArrayList<>();
 		// Step 1: Establishing a Connection
-		try (Connection connection = getConnection();
+		try (Connection connection = DBConnection.getConnection();
 
 				// Step 2:Create a statement using connection object
-			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_COINS);) {
+			PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_ALL_COINS);) {
 			//System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
@@ -110,13 +114,13 @@ public class Dao {
 	}
 	
 	public void insertCoin(Bookmarked coin) throws SQLException{
-		try(Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_COIN)){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-			//String dateString = "22-03-2017 11:18:32";
-			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
+		try(Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(Constant.INSERT_COIN)){
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//			//String dateString = "22-03-2017 11:18:32";
+//			long pDate = sdf.parse().getTime();
 				preparedStatement.setInt(1, coin.getId());
-				preparedStatement.setTimestamp(2,new Timestamp(pDate));
+				preparedStatement.setString(2,coin.getPurchasedDate());
 				preparedStatement.setDouble(3, coin.getQuantity());
 				preparedStatement.setDouble(4, coin.getPurchasedPrice());
 				preparedStatement.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
@@ -132,9 +136,9 @@ public class Dao {
 	public Bookmarked selectBookmarkedCoin(int id) {
 		Bookmarked coin = null;
 		// Step 1: Establishing a Connection
-		try (Connection connection = getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				// Step 2:Create a statement using connection object
-				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOOKMARK_COIN_BY_ID);) {
+				PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_BOOKMARK_COIN_BY_ID);) {
 			preparedStatement.setInt(1, id);
 			
 			// Step 3: Execute the query or update query
@@ -174,10 +178,10 @@ public class Dao {
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<Bookmarked> coins = new ArrayList<>();
 		// Step 1: Establishing a Connection
-		try (Connection connection = getConnection();
+		try (Connection connection = DBConnection.getConnection();
 
 				// Step 2:Create a statement using connection object
-			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKMARKED_COINS);) {
+			PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_ALL_BOOKMARKED_COINS);) {
 			//System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
@@ -210,28 +214,28 @@ public class Dao {
 	}
 	
 	
-	public boolean updateCoin(Bookmarked coin) throws SQLException, ParseException{
+	public boolean updateCoin(Bookmarked coin) throws SQLException{
 		boolean rowUpdated;
-		try(Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COIN);)
+		try(Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(Constant.UPDATE_COIN);)
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 			//String dateString = "11-11-2022 11:18:32";
-			long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
+			//long pDate = sdf.parse(coin.getPurchasedDate()).getTime();
 				preparedStatement.setInt(5, coin.getId());
-				preparedStatement.setTimestamp(1,new Timestamp(pDate));
+				preparedStatement.setString(1,coin.getPurchasedDate());
 				preparedStatement.setDouble(2, coin.getQuantity());
-				preparedStatement.setDouble(3, coin.getQuantity());
+				preparedStatement.setDouble(3, coin.getPurchasedPrice());
 				preparedStatement.setTimestamp(4,new Timestamp(System.currentTimeMillis()));
-			rowUpdated = preparedStatement.executeUpdate()>0;
+				//System.out.println(preparedStatement+" update Query");
+				rowUpdated = preparedStatement.executeUpdate()>0;
 		}
 		return rowUpdated;
 	}
 	
 	public boolean deleteCoin(int id) throws SQLException {
 		boolean rowDeleted;
-		try (Connection connection = getConnection();
-				PreparedStatement statement = connection.prepareStatement(DELETE_COIN);) {
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement statement = connection.prepareStatement(Constant.DELETE_COIN);) {
 			statement.setInt(1, id);
 			rowDeleted = statement.executeUpdate() > 0;
 		}
