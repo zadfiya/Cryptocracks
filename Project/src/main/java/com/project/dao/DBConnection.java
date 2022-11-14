@@ -1,8 +1,17 @@
 package com.project.dao;
 
+import java.io.IOException;
+
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
+
+import com.squareup.okhttp.OkHttpClient;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 public class DBConnection {
@@ -26,5 +35,20 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		return conn;
+	}
+	
+	public static void coinDataJson() throws IOException
+	{
+		OkHttpClient client = new OkHttpClient(); 
+
+		Request request = new Request.Builder()
+		  .url("https://rest.coinapi.io/v1/assets")
+		  .method("POST",null)
+		  .addHeader("X-CoinAPI-Key", Constant.API_KEY)
+		  .build();
+		
+		Response response = client.newCall(request).execute();
+		
+	
 	}
 }

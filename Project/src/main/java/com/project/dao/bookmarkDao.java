@@ -1,70 +1,19 @@
 package com.project.dao;
-import com.project.model.Coin;
-import com.project.model.Bookmarked;
-import com.project.dao.*;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import com.mysql.cj.protocol.InternalTimestamp;
+import com.project.model.Bookmarked;
 
-
-
-
-public class Dao {
-
-	public static Dao getInstance()
+public class bookmarkDao {
+	public static bookmarkDao getInstance()
 	{
-		return new Dao();
-	}
-	public Coin selectCoin(int id) {
-		Coin coin = null;
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_COIN_BY_ID);) {
-			preparedStatement.setInt(1, id);
-			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String startDate = rs.getString("startDate");
-				double price = rs.getDouble("price");
-				double volume24 = rs.getDouble("volume24");
-				String icon = rs.getString("icon");
-				coin = new Coin(id, name,price,startDate,volume24,icon);
-			}
-		} catch (SQLException e) {
-			printSQLException(e);
-		}
-		return coin;
-	}
-	
-	public List<Coin> selectALLCoins() {
-
-		List<Coin> coins = new ArrayList<>();
-
-		try (Connection connection = DBConnection.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(Constant.SELECT_ALL_COINS);) {
-			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String startDate = rs.getString("startDate");
-				double price = rs.getDouble("price");
-				double volume24 = rs.getDouble("volume24");
-				String icon = rs.getString("icon");
-				coins.add(new Coin(id, name,price,startDate,volume24,icon));
-			}
-		} catch (SQLException e) {
-			printSQLException(e);
-		}
-		return coins;
+		return new bookmarkDao();
 	}
 	
 	public void insertCoin(Bookmarked coin) throws SQLException{
@@ -77,21 +26,6 @@ public class Dao {
 				preparedStatement.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
 				preparedStatement.setTimestamp(6,new Timestamp(System.currentTimeMillis()));
 				preparedStatement.setString(7,coin.getName());
-				preparedStatement.execute();}catch(Exception e) {
-					e.printStackTrace();
-					
-		}	
-		
-	}
-	
-	public void insertCoinFromAPI(Coin coin) throws SQLException{
-		try(Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(Constant.INSERT_COIN_DB)){
-				preparedStatement.setString(1, coin.getName());
-				preparedStatement.setDouble(2,coin.getPrice());
-				preparedStatement.setString(3, coin.getStartDate());
-				preparedStatement.setDouble(4, coin.getVolume24());
-				preparedStatement.setString(5,coin.getIcon());
 				preparedStatement.execute();}catch(Exception e) {
 					e.printStackTrace();
 					
@@ -205,4 +139,5 @@ public class Dao {
 			}
 		}
 	}
+	
 }

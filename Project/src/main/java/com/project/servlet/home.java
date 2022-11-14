@@ -159,7 +159,7 @@ public class home extends HttpServlet {
 		Bookmarked bookmarked = new Bookmarked(coinid,purchasedPrice,quantity,purchasedDate,insertDate);
 		bookmarked.setName(name);
 		bookmarkedDao.insertCoin(bookmarked);
-		response.sendRedirect("list");
+		response.sendRedirect("bookmarklist");
 	}
 	
 

@@ -21,11 +21,9 @@ public class Bookmarked {
 		 updateDate="";
 		 name="";
 	}
-	//updateConstructor
 	public Bookmarked(double purchasedPrice,double quantity,String purchasedDate,String updatedDate,int id)
 	{
 		this.setId(id);
-		//this.setCoinid(coinid);
 		this.setPurchasedPrice(purchasedPrice);
 		this.setQuantity(quantity);
 		this.setPurchasedDate(purchasedDate);
