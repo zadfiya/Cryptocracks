@@ -58,7 +58,7 @@
 					<td><c:out value="${user.name}" /></td>
 					<td><c:out value="${user.price}" /></td>
 					<td><c:out value="${user.volume24}" /></td>
-					<td><c:out value="${user.volume24}" /></td>
+					<td><c:out value="${user.startDate}" /></td>
                     <td>
                         <a href="addcoin?coinid=<c:out value='${user.id}'/>" class="btn btn-info item-edit" title="Edit details">
                             <span class="svg-icon svg-icon-md">
