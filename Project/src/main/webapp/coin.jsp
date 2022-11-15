@@ -54,7 +54,7 @@
             	<c:forEach var="user" items="${listCoins}">
                 <tr class="flex align-middle">
                     <td><c:out value="${user.id}" /></td>
-					<td><img style="width: 20%; height: auto;" src='<c:out value="${user.icon}"></c:out>' /><c:out value="${user.name}" /></td>
+                    <td style="width: 100px;"><img style="width: 50%; height: auto;" src='<c:out value="${user.icon}"></c:out>' /></td>
 					<td><c:out value="${user.name}" /></td>
 					<td><c:out value="${user.price}" /></td>
 					<td><c:out value="${user.volume24}" /></td>
