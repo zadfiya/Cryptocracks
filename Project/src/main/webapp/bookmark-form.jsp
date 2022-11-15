@@ -44,7 +44,8 @@
 				<c:if test="${bookmarkCoin != null}">
 					<input type="hidden" name="id" value="<c:out value='${bookmarkCoin.id}' />" />
 					<fieldset class="form-group">
-					<label>Coin Name</label> <input type="text"
+					<label>Coin Name</label> 
+					<input type="text"
 						value="<c:out value='${bookmarkCoin.name}' />" class="form-control"
 						name="name" required="required">
 					</fieldset>

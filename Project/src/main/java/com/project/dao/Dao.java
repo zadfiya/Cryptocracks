@@ -70,7 +70,7 @@ public class Dao {
 	public void insertCoin(Bookmarked coin) throws SQLException{
 		try(Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(Constant.INSERT_COIN)){
-				preparedStatement.setInt(1, coin.getId());
+				preparedStatement.setInt(1, coin.getCoinid());
 				preparedStatement.setString(2,coin.getPurchasedDate());
 				preparedStatement.setDouble(3, coin.getQuantity());
 				preparedStatement.setDouble(4, coin.getPurchasedPrice());
