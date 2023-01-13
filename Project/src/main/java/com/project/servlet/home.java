@@ -22,10 +22,9 @@ import com.project.model.Coin;
 @WebServlet("/")
 public class home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Dao coinDao,bookmarkedDao;
+	private Dao coinDao;
 	public void init() {
 		coinDao = new Dao();
-		bookmarkedDao = new Dao();
 	}
     /**
      * @see HttpServlet#HttpServlet()
@@ -140,7 +139,7 @@ public class home extends HttpServlet {
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Bookmarked bookmarkedCoin = bookmarkedDao.selectBookmarkedCoin(id);
+		Bookmarked bookmarkedCoin = coinDao.selectBookmarkedCoin(id);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("bookmark-form.jsp");
 		request.setAttribute("bookmarkCoin", bookmarkedCoin);
 		dispatcher.forward(request, response);
@@ -158,7 +157,7 @@ public class home extends HttpServlet {
 		String insertDate = (String) request.getAttribute("insertDate");
 		Bookmarked bookmarked = new Bookmarked(coinid,purchasedPrice,quantity,purchasedDate,insertDate);
 		bookmarked.setName(name);
-		bookmarkedDao.insertCoin(bookmarked);
+		coinDao.insertCoin(bookmarked);
 		response.sendRedirect("bookmarklist");
 	}
 	
@@ -173,7 +172,7 @@ public class home extends HttpServlet {
 		String updatedDate = request.getParameter("updatedDate");
 
 		Bookmarked bookmark = new Bookmarked( purchasedPrice, quantity, purchasedDate, updatedDate, id);
-		bookmarkedDao.updateCoin(bookmark);
+		coinDao.updateCoin(bookmark);
 		response.sendRedirect("bookmarklist");
 	}
 
@@ -181,7 +180,7 @@ public class home extends HttpServlet {
 			throws SQLException, IOException {
 		
 		int id = Integer.parseInt(request.getParameter("id"));
-		bookmarkedDao.deleteCoin(id);
+		coinDao.deleteCoin(id);
 		response.sendRedirect("bookmarklist");
 
 	}
